@@ -4,6 +4,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class Main {
     private static FactoryConfiguration factoryConfiguration;
     public static void main(String[] args) {
@@ -26,6 +28,11 @@ public class Main {
 
         Customer customer = new Customer("Ann@gmail.com", 6, "Ann", "0114785237");
         updateCustomer(customer);
+
+        List<Customer> allCustomer = getAllCustomer();
+        for (Customer customers : allCustomer){
+            System.out.println(customers);
+        }
     }
     //save customer
     public static boolean saveCustomer(Customer customer){
@@ -69,6 +76,7 @@ public class Main {
             }
         }
     }
+    //update customer
     public static boolean updateCustomer(Customer customer){
         Session session = factoryConfiguration.getSession();
         try{
@@ -84,5 +92,12 @@ public class Main {
                 session.close();
             }
         }
+    }
+    //get all
+    public static List<Customer> getAllCustomer(){
+        Session session = factoryConfiguration.getSession();
+        List<Customer> customers = session.createQuery("from Customer", Customer.class).list();//HQL
+        session.close();
+        return customers;
     }
 }
