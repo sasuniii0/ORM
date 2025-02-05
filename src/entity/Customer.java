@@ -1,9 +1,13 @@
 package entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "customer") // table name
 public class Customer {
+    @Id // primary key
     private int id;
     private String name;
     private String email;
