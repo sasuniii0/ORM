@@ -23,6 +23,9 @@ public class Main {
         System.out.println(customerById);
 
         //boolean b = deleteCustomer(6);
+
+        Customer customer = new Customer("Ann@gmail.com", 6, "Ann", "0114785237");
+        updateCustomer(customer);
     }
     //save customer
     public static boolean saveCustomer(Customer customer){
@@ -61,6 +64,22 @@ public class Main {
             e.printStackTrace();
             return false;
         }   finally{
+            if (session != null){
+                session.close();
+            }
+        }
+    }
+    public static boolean updateCustomer(Customer customer){
+        Session session = factoryConfiguration.getSession();
+        try{
+            Transaction transaction = session.beginTransaction();
+            session.merge(customer);
+            transaction.commit();
+            return true;
+        }catch (HibernateException e){
+            e.printStackTrace();
+            return false;
+        }finally {
             if (session != null){
                 session.close();
             }
