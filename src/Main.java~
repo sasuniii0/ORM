@@ -1,6 +1,5 @@
 import config.FactoryConfiguration;
 import entity.Customer;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -10,14 +9,10 @@ public class Main {
 
         //save customer
         Session session = FactoryConfiguration.getInstance().getSession();
-        try {
-            Transaction transaction = session.beginTransaction();
-            session.save(customer);
+        Transaction transaction = session.beginTransaction();
+        session.save(customer);
 
-            transaction.commit();
-            session.close();
-        } catch (HibernateException e) {
-            System.out.println("Failed to save Customer");
-        }
+        transaction.commit();
+        session.close();
     }
 }
