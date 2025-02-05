@@ -22,7 +22,7 @@ public class Main {
         Customer customerById = getCustomerById(2);
         System.out.println(customerById);
 
-        boolean b = deleteCustomer(6);
+        //boolean b = deleteCustomer(6);
     }
     //save customer
     public static boolean saveCustomer(Customer customer){
@@ -45,6 +45,7 @@ public class Main {
     public static Customer getCustomerById(int id){
         Session session = factoryConfiguration.getSession();
         Customer customer = session.get(Customer.class,id);
+        session.close();
         return customer;
     }
     //delete customer
