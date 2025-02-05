@@ -1,16 +1,27 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "customer") // table name
 public class Customer {
     @Id // primary key
+ //   @GeneratedValue(strategy = GenerationType.AUTO) // int ekk wenna one auto generate kjrnkota
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+
+    @Embedded
+    private CustomerFullName name;
+
+    @Column(name = "customer_email", nullable = false) // Specifies name and not null
     private String email;
+
+    @Transient // non-persistent
+    private String visaCardNumber;
+
+    @Lob // storing large text or binary data
+    private String description;
+
     private String phone;
 
     public String getEmail() {
@@ -29,13 +40,14 @@ public class Customer {
         this.id = id;
     }
 
-    public String getName() {
+    public CustomerFullName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(CustomerFullName name) {
         this.name = name;
     }
+
 
     public String getPhone() {
         return phone;
@@ -55,7 +67,7 @@ public class Customer {
                 '}';
     }
 
-    public Customer(String email, int id, String name, String phone) {
+    public Customer(String email, int id, CustomerFullName name, String phone) {
         this.email = email;
         this.id = id;
         this.name = name;
