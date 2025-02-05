@@ -5,19 +5,64 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class Main {
+    private static FactoryConfiguration factoryConfiguration;
     public static void main(String[] args) {
-        Customer customer = new Customer("Alice@gmail.com", 1, "Alice", "0114785236");
+        factoryConfiguration = FactoryConfiguration.getInstance();
+        /*Customer customer2 = new Customer("Ann@gmail.com", 2, "Ann", "0114785237");
+        Customer customer3 = new Customer("John@gmail.com", 3, "John", "0114785238");
+        Customer customer4 = new Customer("Nice@gmail.com", 4, "Nice", "0114785239");
+        Customer customer5 = new Customer("Mice@gmail.com", 5, "Mice", "0114785230");
+        Customer customer6 = new Customer("Eva@gmail.com", 6, "Eva", "0114785231");
 
-        //save customer
-        Session session = FactoryConfiguration.getInstance().getSession();
+        saveCustomer(customer2);
+        saveCustomer(customer3);
+        saveCustomer(customer4);
+        saveCustomer(customer5);
+        saveCustomer(customer6);*/
+        Customer customerById = getCustomerById(2);
+        System.out.println(customerById);
+
+        boolean b = deleteCustomer(6);
+    }
+    //save customer
+    public static boolean saveCustomer(Customer customer){
+        Session session = factoryConfiguration.getSession();
         try {
             Transaction transaction = session.beginTransaction();
             session.save(customer);
-
             transaction.commit();
-            session.close();
-        } catch (HibernateException e) {
-            System.out.println("Failed to save Customer");
+            return true;
+        }catch (HibernateException e){
+            e.printStackTrace();
+            return false;
+        }   finally{
+            if (session != null){
+                session.close();
+            }
+        }
+    }
+    //get customer
+    public static Customer getCustomerById(int id){
+        Session session = factoryConfiguration.getSession();
+        Customer customer = session.get(Customer.class,id);
+        return customer;
+    }
+    //delete customer
+    public static boolean deleteCustomer(int id){
+        Session session = factoryConfiguration.getSession();
+        try {
+            Transaction transaction = session.beginTransaction();
+            Customer customer = session.get(Customer.class,id);
+            session.delete(customer);
+            transaction.commit();
+            return true;
+        }catch (HibernateException e){
+            e.printStackTrace();
+            return false;
+        }   finally{
+            if (session != null){
+                session.close();
+            }
         }
     }
 }
